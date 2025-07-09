@@ -1,19 +1,13 @@
-import {
-  useQuery,
-  useMutation,
-  QueryClient,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/useAuthStore";
-import { use, useActionState } from "react";
-import { Patient, usePatientStore } from "./store/usePatientstore";
+
+import { usePatientStore } from "./store/usePatientstore";
 import axios from "axios";
-import { queryObjects } from "v8";
 
 import { useLaboratoryStore } from "./store/useLaboratoryStore";
 import { useAIStore } from "./store/useAiAnalysisStore";
 
-const BASE_URL = "http://127.0.0.1:8000";
+const BASE_URL = "https://backend-1-fmwc.onrender.com";
 
 export const usePatient = () => {
   const { token } = useAuthStore();
@@ -36,11 +30,11 @@ export const usePatient = () => {
   });
 };
 
-interface CreatePatient {
-  name: string;
-  age: number;
-  symptoms: string;
-}
+// interface CreatePatient {
+//   name: string;
+//   age: number;
+//   symptoms: string;
+// }
 
 export const useCreatePatient = () => {
   const { token } = useAuthStore();
