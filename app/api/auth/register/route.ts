@@ -1,20 +1,24 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+
+type RegisterResponse = {
+  access_token: string;
+  username: string;
+};
 
 export async function POST(req: NextRequest) {
   const { username, password } = await req.json();
 
   try {
-    const response = await axios.post(
-      "http://127.0.0.1:8000/auth/signup", // ✅ No space here
+    const response = await axios.post<RegisterResponse>(
+      "https://backend-1-fmwc.onrender.com/auth/signup",
       {
         username,
         password,
       },
       {
-        headers: { "Content-Type": "application/json" }, // ✅ Correct spelling
+        headers: { "Content-Type": "application/json" },
       }
     );
 
@@ -30,19 +34,19 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      username: response.data.username, // optionally include username here
+      username: response.data.username,
       token,
     });
-  } catch (error: any) {
-    console.error("Register error:", error.response?.data || error.message);
+  } catch (err: unknown) {
+    let message = "Invalid credentials or server error";
 
-    return NextResponse.json(
-      {
-        error: "Invalid credentials or server error",
-      },
-      {
-        status: 401,
-      }
-    );
+    if (axios.isAxiosError(err)) {
+      message = err.response?.data?.error || err.message;
+      console.error("Register error:", err.response?.data || err.message);
+    } else {
+      console.error("Unexpected error:", err);
+    }
+
+    return NextResponse.json({ error: message }, { status: 401 });
   }
 }

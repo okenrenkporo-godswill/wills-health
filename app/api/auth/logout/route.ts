@@ -1,15 +1,20 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function POST(_req: NextRequest) {
+export async function POST() {
   try {
     (await cookies()).delete("Token");
+
     return NextResponse.json({
       success: true,
     });
-  } catch (error) {
-    console.error("Login failed:", error);
-    return NextResponse.json({ error: "Login failed" }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Logout error:", error.message);
+    } else {
+      console.error("Unexpected logout error:", error);
+    }
+
+    return NextResponse.json({ error: "Logout failed" }, { status: 500 });
   }
 }
