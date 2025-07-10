@@ -2,12 +2,13 @@
 
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Input } from "@/components/ui/input";
+
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { usePatientStore } from "@/store/usePatientstore";
 import { useCreateLabResult } from "@/quries";
 import AllLabResults from "./AllLabResult";
+import Image from "next/image";
 
 const labInvestigations = [
   "Full Blood Count (FBC)",
@@ -62,11 +63,7 @@ const LabResultForm = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <img
-              src="/logo.png"
-              alt="Lab Icon"
-              className="w-14 h-14 object-contain"
-            />
+            <Image src="/lab.png" alt="Lab" width={300} height={200} />
             <h2 className="text-2xl font-bold text-blue-700">
               Laboratory Request Form
             </h2>
@@ -147,9 +144,11 @@ const LabResultForm = () => {
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
         >
-          <img
+          <Image
             src="/laboratory.jpg"
             alt="Laboratory Image"
+            width={400} // Set an appropriate width
+            height={300} // Set an appropriate height
             className="rounded-xl shadow-md w-full max-w-sm object-cover"
           />
         </motion.div>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Logo from "./Logo";
 import Link from "next/link";
-import { Mail, UserIcon, LogOut, Menu } from "lucide-react";
+import { UserIcon, LogOut, Menu } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 
