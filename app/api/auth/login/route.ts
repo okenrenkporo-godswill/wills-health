@@ -32,13 +32,7 @@ export async function POST(req: NextRequest) {
       token,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error: "invalid credentials",
-      },
-      {
-        status: 401,
-      }
-    );
+    console.error("Login failed:", error);
+    return NextResponse.json({ error: "Login failed" }, { status: 500 });
   }
 }
