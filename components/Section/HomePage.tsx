@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Image from "next/image";
 import Link from "next/link";
-import Footer from "./Footer"; // 👈 Import footer
+import Footer from "./Footer";
 import { isMobile } from "@/lib/mobile";
 
 const HomePage = () => {
@@ -65,8 +65,8 @@ const HomePage = () => {
               </span>{" "}
               <span className="text-gray-500 italic">
                 Our AI-driven services help you make informed decisions, track
-                your wellness, and access support anytime—so you're never alone
-                on your health journey.
+                your wellness, and access support anytime—so you&rsquo;re never
+                alone on your health journey.
               </span>
             </p>
             <Link
