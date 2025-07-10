@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 "use client";
 
 import React, { useState } from "react";
@@ -11,7 +10,7 @@ import { useAIStore } from "@/store/useAiAnalysisStore";
 
 const AIAnalysis = () => {
   const [selectedPatientIds, setSelectedPatientIds] = useState<number[]>([]);
-  const [chatMessages, setChatMessages] = useState<any[]>([]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const { patients } = usePatientStore();
   const { mutate } = useAIAnalysis();
   const loading = useAIStore((s) => s.loading); // ✅ Zustand loading state
@@ -42,6 +41,14 @@ const AIAnalysis = () => {
         },
       });
     });
+  };
+
+  type ChatMessage = {
+    id: number;
+    name: string;
+    condition: string;
+    advice: string;
+    urgent: boolean;
   };
 
   return (
