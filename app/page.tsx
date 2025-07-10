@@ -1,9 +1,10 @@
-import HomePage from "@/components/Section/HomePage";
+// /import HomePage from "@/components/Section/HomePage";
 
 export default function Home() {
   return (
     <div>
-      <HomePage />
+      {/* <HomePage /> */}
+      <p>hello word welome</p>
     </div>
   );
 }
