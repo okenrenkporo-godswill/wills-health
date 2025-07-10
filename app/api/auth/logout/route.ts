@@ -1,20 +1,14 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
   try {
     (await cookies()).delete("Token");
     return NextResponse.json({
       success: true,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error: "Error logging",
-      },
-      {
-        status: 401,
-      }
-    );
+    console.error("Login failed:", error);
+    return NextResponse.json({ error: "Login failed" }, { status: 500 });
   }
 }
