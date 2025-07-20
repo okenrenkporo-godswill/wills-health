@@ -96,7 +96,7 @@ export const useCreateLabResult = (patient_id: number) => {
   return useMutation<any, Error, LabResultPayload>({
     mutationFn: async ({ test_type, result_value }) => {
       const res = await axios.post(
-        `http://127.0.0.1:8000/labresult/${patient_id}`,
+        `${BASE_URL}/labresult/${patient_id}`, // ✅ Fixed template string
         { test_type, result_value },
         {
           headers: {

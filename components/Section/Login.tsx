@@ -85,7 +85,7 @@ function Login() {
     <div
       className={`${
         mobile ? "w-full px-4" : "w-[500px]"
-      } text-primary border-gray-100 border-2 bg-gray-50 p-4 mx-auto mt-10`}
+      }   text-primary border-gray-100 border-2 bg-gray-50 p-4 mx-auto mt-10`}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

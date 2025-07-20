@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { usePatientStore } from "@/store/usePatientstore";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Loader2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import { useAIAnalysis } from "@/quries";
 import { useAIStore } from "@/store/useAiAnalysisStore";
 
@@ -13,16 +13,14 @@ const AIAnalysis = () => {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const { patients } = usePatientStore();
   const { mutate } = useAIAnalysis();
-  const loading = useAIStore((s) => s.loading); // ✅ Zustand loading state
+  const loading = useAIStore((s) => s.loading);
 
-  // Toggle selected patient (multi-select)
   const togglePatient = (id: number) => {
     setSelectedPatientIds((prev) =>
       prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
     );
   };
 
-  // Run AI Analysis for selected patients
   const handleAIAnalysis = () => {
     selectedPatientIds.forEach((id) => {
       mutate(id, {
@@ -41,6 +39,14 @@ const AIAnalysis = () => {
         },
       });
     });
+  };
+
+  const handleDeleteMessage = (id: number) => {
+    setChatMessages((prev) => prev.filter((msg) => msg.id !== id));
+  };
+
+  const handleClearAll = () => {
+    setChatMessages([]);
   };
 
   type ChatMessage = {
@@ -81,7 +87,7 @@ const AIAnalysis = () => {
       </div>
 
       {/* Analyze Button */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <Button
           disabled={selectedPatientIds.length === 0 || loading}
           onClick={handleAIAnalysis}
@@ -96,6 +102,16 @@ const AIAnalysis = () => {
             "Analyze Selected Patients"
           )}
         </Button>
+
+        {chatMessages.length > 0 && (
+          <Button
+            variant="outline"
+            onClick={handleClearAll}
+            className="border-red-400 text-red-600 hover:bg-red-50"
+          >
+            🗑️ Clear All
+          </Button>
+        )}
       </div>
 
       {/* Chatroom Messages */}
@@ -103,11 +119,20 @@ const AIAnalysis = () => {
         {chatMessages.map((msg, index) => (
           <motion.div
             key={index}
-            className="bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-md"
+            className="relative bg-blue-50 border border-blue-200 p-4 rounded-xl shadow-md"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, delay: index * 0.1 }}
           >
+            {/* Delete Button (top-right corner) */}
+            <button
+              onClick={() => handleDeleteMessage(msg.id)}
+              className="absolute top-2 right-2 text-red-500 hover:text-red-700 transition"
+              aria-label="Delete analysis"
+            >
+              <Trash2 className="w-4 h-4" />
+            </button>
+
             <h4 className="font-semibold text-blue-800 mb-2">
               👤 {msg.name} (ID: {msg.id})
             </h4>

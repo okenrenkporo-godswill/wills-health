@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import { isMobile } from "@/lib/mobile";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -33,6 +35,16 @@ const formSchema = z.object({
 
 function Register() {
   const router = useRouter();
+  const [mobile, setMobile] = useState(false);
+
+  useEffect(() => {
+    setMobile(isMobile());
+
+    const handleResize = () => setMobile(isMobile());
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,7 +77,11 @@ function Register() {
   };
 
   return (
-    <div className=" w-[500px] text-primary focus:outline-none border-gray-100 border-2 bg-gray-50  p-2">
+    <div
+      className={`${
+        mobile ? "w-full px-4" : "w-[500px]"
+      } text-primary border-gray-100 border-2 bg-gray-50 p-4 mx-auto mt-10`}
+    >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField

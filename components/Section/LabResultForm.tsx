@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +9,7 @@ import { usePatientStore } from "@/store/usePatientstore";
 import { useCreateLabResult } from "@/quries";
 import AllLabResults from "./AllLabResult";
 import Image from "next/image";
+import { isMobile } from "@/lib/mobile";
 
 const labInvestigations = [
   "Full Blood Count (FBC)",
@@ -33,6 +34,16 @@ const LabResultForm = () => {
     selectedPatientId ?? 0
   );
   const patients = usePatientStore((state) => state.patients);
+  const [mobile, setMobile] = useState(false);
+
+  useEffect(() => {
+    setMobile(isMobile());
+
+    const handleResize = () => setMobile(isMobile());
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleCreateLabResult = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,7 +60,9 @@ const LabResultForm = () => {
 
   return (
     <motion.div
-      className="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg border border-blue-200"
+      className={`${
+        mobile ? "w-full px-4" : "w-full"
+      }  max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg border border-blue-200`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -63,7 +76,7 @@ const LabResultForm = () => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <Image src="/lab.png" alt="Lab" width={300} height={200} />
+            <Image src="/logo.png" alt="Lab" width={100} height={100} />
             <h2 className="text-2xl font-bold text-blue-700">
               Laboratory Request Form
             </h2>

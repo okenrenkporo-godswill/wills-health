@@ -1,38 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Define public routes
-const publicRoutes = ["/login", "/register"];
+// Routes that are public
+const PUBLIC_ROUTES = ["/login", "/register"];
+const LOGIN_PATH = "/login";
+const DASHBOARD_PATH = "/user/dashboard";
 
-// Middleware logic
 export function middleware(req: NextRequest) {
+  // 🔐 Get JWT from cookie
   const token = req.cookies.get("Token")?.value;
   const { pathname } = req.nextUrl;
 
-  // Check if path is under /user (protected)
-  const isProtectedRoute = pathname.startsWith("/user");
+  const isPublic = PUBLIC_ROUTES.includes(pathname);
+  const isProtected = pathname.startsWith("/user");
 
-  // Redirect to login if not authenticated
-  if (isProtectedRoute && !token) {
-    // If already on /login, don't redirect again
-    if (pathname !== "/login") {
-      const loginUrl = req.nextUrl.clone();
-      loginUrl.pathname = "/login";
-      return NextResponse.redirect(loginUrl);
-    }
+  // 1️⃣ If trying to access protected route without JWT, redirect to login
+  if (isProtected && !token) {
+    const loginUrl = req.nextUrl.clone();
+    loginUrl.pathname = LOGIN_PATH;
+    loginUrl.searchParams.set("redirect", pathname); // Optional: redirect back after login
+    return NextResponse.redirect(loginUrl);
   }
 
-  // Redirect to dashboard if authenticated but on login/register
-  const isPublicRoute = publicRoutes.includes(pathname);
-  if (token && isPublicRoute) {
+  // 2️⃣ If logged in and visiting login/register, redirect to dashboard
+  if (token && isPublic) {
     const dashboardUrl = req.nextUrl.clone();
-    dashboardUrl.pathname = "/user/dashboard";
+    dashboardUrl.pathname = DASHBOARD_PATH;
     return NextResponse.redirect(dashboardUrl);
   }
 
+  // ✅ Otherwise allow access
   return NextResponse.next();
 }
 
-// Apply to only these routes
 export const config = {
   matcher: ["/user/:path*", "/login", "/register"],
 };

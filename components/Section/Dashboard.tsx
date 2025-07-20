@@ -15,6 +15,9 @@ import AIAnalysis from "./AiAnalysis";
 import AllLabResults from "./AllLabResult";
 import Image from "next/image";
 import DiseaseBrowser from "./DiseaseBrowser";
+import Footers from "./Footers";
+import OverviewSection from "./OverviewSection";
+import { isMobile } from "@/lib/mobile";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -24,8 +27,20 @@ const Dashboard = () => {
   const { mutate: createNewPatient } = useCreatePatient();
   const [mounted, setMounted] = useState(false);
 
+  // NEW: State to track if on mobile
+  const [mobile, setMobile] = useState(false);
+
+  // Check on mount whether it's mobile
   useEffect(() => {
     setMounted(true);
+    setMobile(isMobile());
+
+    const handleResize = () => setMobile(isMobile());
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   if (!mounted) return null;
@@ -43,97 +58,97 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 p-6 font-sans">
-      <motion.header
-        className="mb-10 text-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+    <Tabs
+      defaultValue="overview"
+      className={`min-h-screen flex ${
+        mobile ? "flex-col" : "flex-row"
+      } bg-white font-sans`}
+    >
+      {/* Sidebar */}
+      <aside
+        className={`${
+          mobile
+            ? "w-full border-b rounded-b-2xl"
+            : "md:w-[240px] md:min-h-screen md:border-r rounded-r-2xl"
+        } 
+  bg-gradient-to-b from-blue-50 to-white flex-shrink-0 shadow-sm flex flex-col`}
       >
-        <h1 className="text-5xl font-extrabold text-blue-800">
-          Wills Health Center
-        </h1>
-        <p className="text-sm text-gray-600 mt-2">
-          Empowering care through data and technology
-        </p>
-        <p className="mt-1 text-gray-700 font-medium">
-          Welcome back, {username || "Guest"} 👋
-        </p>
-      </motion.header>
-
-      <Tabs className="w-full max-w-7xl mx-auto">
-        <TabsList className="grid grid-cols-5 rounded-lg bg-blue-700 text-white shadow mb-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="conditions">Conditions</TabsTrigger>
-          <TabsTrigger value="patients">Patients </TabsTrigger>
-          <TabsTrigger value="lab">Lab Results</TabsTrigger>
-          <TabsTrigger value="ai">AI Analysis</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview">
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
+        <div className="flex flex-col justify-evenly h-[100px] md:h-[600px] p-6">
+          {/* Tabs List - Vertical for desktop, Horizontal for mobile */}
+          <TabsList
+            className={`${
+              mobile ? "flex flex-row gap-1" : "flex flex-col gap-2"
+            } bg-transparent p-0 shadow-none text-left w-full`}
           >
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold text-blue-700">
-                Quality Healthcare at Your Fingertips
-              </h2>
-              <p className="text-gray-700 text-lg">
-                At Wills Health, our mission is to transform patient care
-                through technology. With powerful tools like lab tracking,
-                patient insights, and AI diagnostics, our platform is designed
-                to support both healthcare professionals and patients every step
-                of the way.
-              </p>
+            {[
+              { label: "Overview", value: "overview" },
+              { label: "Conditions", value: "conditions" },
+              { label: "Patients", value: "patients" },
+              { label: "Lab Results", value: "lab" },
+              { label: "AI Analysis", value: "ai" },
+            ].map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className={`w-full justify-start px-4 py-2 rounded-md text-sm text-blue-900 font-medium hover:bg-blue-100 hover:text-blue-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white transition-all ${
+                  mobile ? "text-xs px-2 py-1" : ""
+                }`}
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          {/* Profile Section - Hide on mobile */}
+          {!mobile && (
+            <div className="flex items-center space-x-3 border-t pt-6 mt-10">
+              <Image
+                src="/nurse.jpg"
+                alt="User Avatar"
+                width={42}
+                height={42}
+                className="rounded-full border"
+              />
+              <div>
+                <p className="text-sm font-semibold text-gray-700">
+                  Brooklyn Simmons
+                </p>
+                <p className="text-xs text-gray-500">Upcoming Appointment</p>
+              </div>
             </div>
-            <Image
-              src="/overview-illustration.png"
-              alt="Healthcare Overview"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-md"
-            />
-          </motion.div>
+          )}
+        </div>
+      </aside>
 
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Card className="bg-white shadow-md border-l-4 border-blue-600">
-              <CardContent className="p-6">
-                <p className="text-lg font-semibold text-gray-600">
-                  Total Patients
-                </p>
-                <p className="text-4xl text-blue-700 mt-2 font-bold">124</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-white shadow-md border-l-4 border-green-600">
-              <CardContent className="p-6">
-                <p className="text-lg font-semibold text-gray-600">
-                  Lab Results
-                </p>
-                <p className="text-4xl text-green-700 mt-2 font-bold">88</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-white shadow-md border-l-4 border-purple-600">
-              <CardContent className="p-6">
-                <p className="text-lg font-semibold text-gray-600">
-                  AI Analyses
-                </p>
-                <p className="text-4xl text-purple-700 mt-2 font-bold">42</p>
-              </CardContent>
-            </Card>
-          </motion.div>
+      {/* Main content */}
+      <main className={`flex-1 pt-6 px-4 md:px-6 md:pt-10 overflow-y-auto`}>
+        <motion.header
+          className="mb-10"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1 className="text-3xl md:text-4xl font-extrabold text-blue-800">
+            Wills Health Center
+          </h1>
+          <p className="text-sm text-gray-600 mt-2">
+            Empowering care through data and technology
+          </p>
+          <p className="mt-1 text-gray-700 font-medium">
+            Welcome back, {username || "Guest"} 👋
+          </p>
+        </motion.header>
+
+        {/* Content Tabs */}
+        <TabsContent value="overview">
+          <OverviewSection />
         </TabsContent>
 
         <TabsContent value="patients">
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            className={`grid grid-cols-1 ${
+              mobile ? "" : "md:grid-cols-2"
+            } gap-6`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
@@ -164,7 +179,6 @@ const Dashboard = () => {
                 </Button>
               </CardContent>
             </Card>
-
             <AllPatient />
           </motion.div>
         </TabsContent>
@@ -199,24 +213,26 @@ const Dashboard = () => {
             <DiseaseBrowser />
           </motion.div>
         </TabsContent>
-      </Tabs>
 
-      <motion.section
-        className="mt-20 max-w-6xl mx-auto"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
-        <h2 className="text-2xl font-bold text-blue-800 mb-4">
-          📅 Appointments
-        </h2>
-        <Card className="bg-white border shadow-md">
-          <CardContent className="p-6 text-gray-700">
-            <p className="text-center">No appointments scheduled yet.</p>
-          </CardContent>
-        </Card>
-      </motion.section>
-    </div>
+        <motion.section
+          className="mt-20 max-w-6xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h2 className="text-2xl font-bold text-blue-800 mb-4">
+            📅 Appointments
+          </h2>
+          <Card className="bg-white border shadow-md">
+            <CardContent className="p-6 text-gray-700">
+              <p className="text-center">No appointments scheduled yet.</p>
+            </CardContent>
+          </Card>
+        </motion.section>
+
+        <Footers />
+      </main>
+    </Tabs>
   );
 };
 
