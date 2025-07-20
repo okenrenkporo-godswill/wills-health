@@ -205,7 +205,7 @@ const OverviewSection = () => {
           Step Into the Future of Healthcare
         </h3>
         <p className="text-gray-600 mb-4">
-          Wills Health is more than a system — it's your companion in wellness.
+          Wills Health is more than a system it is your companion in wellness.
           Discover the peace of mind that comes with precision medicine,
           intelligent monitoring, and healthcare that truly cares.
         </p>
