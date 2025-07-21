@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 
 const Footers = () => {
   return (
-    <footer className="bg-primary text-white px-6 py-16 mt-20 rounded-2xl">
+    <footer className="bg-gradient-to-b from-blue-100 to-white text-primary px-6 py-16 mt-20 rounded-2xl">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-10">
         {/* Logo & CTA */}
         <div className="col-span-1 md:col-span-1">
@@ -37,7 +37,7 @@ const Footers = () => {
         {/* Quick Links */}
         <div>
           <h2 className="text-lg font-semibold mb-4">Quick Links</h2>
-          <ul className="space-y-2 text-sm text-white/80">
+          <ul className="space-y-2 text-sm text-primary">
             <li>
               <Link href="#">Find a Doctor</Link>
             </li>
@@ -68,7 +68,7 @@ const Footers = () => {
         {/* Medical Professionals */}
         <div>
           <h2 className="text-lg font-semibold mb-4">Medical Professionals</h2>
-          <ul className="space-y-2 text-sm text-white/80">
+          <ul className="space-y-2 text-sm text-primary">
             <li>
               <Link href="#">AskMayoExpert</Link>
             </li>
@@ -96,7 +96,7 @@ const Footers = () => {
         {/* Students */}
         <div>
           <h2 className="text-lg font-semibold mb-4">Students</h2>
-          <ul className="space-y-2 text-sm text-white/80">
+          <ul className="space-y-2 text-sm text-primary">
             <li>
               <Link href="#">Admissions Requirements</Link>
             </li>
@@ -118,7 +118,7 @@ const Footers = () => {
         {/* Financial & Global */}
         <div>
           <h2 className="text-lg font-semibold mb-4">Global & Financial</h2>
-          <ul className="space-y-2 text-sm text-white/80">
+          <ul className="space-y-2 text-sm text-primary">
             <li>
               <Link href="#">International Appointments</Link>
             </li>
@@ -154,16 +154,16 @@ const Footers = () => {
         </p>
         <div className="flex space-x-4 mt-4 md:mt-0">
           <Link href="https://web.facebook.com/login/?_rdc=1&_rdr#">
-            <Facebook className="w-5 h-5 hover:text-white" />
+            <Facebook className="w-5 h-5 hover:text-blue-600" />
           </Link>
           <Link href="instagram.com">
-            <Instagram className="w-5 h-5 hover:text-white" />
+            <Instagram className="w-5 h-5 hover:text-blue-600" />
           </Link>
           <Link href="linkedin.com">
-            <Linkedin className="w-5 h-5 hover:text-white" />
+            <Linkedin className="w-5 h-5 hover:text-blue-600" />
           </Link>
           <Link href="youtube.com">
-            <Youtube className="w-5 h-5 hover:text-white" />
+            <Youtube className="w-5 h-5 hover:text-blue-600" />
           </Link>
         </div>
       </div>

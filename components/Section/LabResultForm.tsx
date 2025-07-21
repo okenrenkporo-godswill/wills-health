@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { usePatientStore } from "@/store/usePatientstore";
@@ -10,6 +9,7 @@ import { useCreateLabResult } from "@/quries";
 import AllLabResults from "./AllLabResult";
 import Image from "next/image";
 import { isMobile } from "@/lib/mobile";
+import { toast } from "sonner";
 
 const labInvestigations = [
   "Full Blood Count (FBC)",
@@ -25,23 +25,26 @@ const labInvestigations = [
   "MRI",
 ];
 
-const LabResultForm = () => {
+const LabResultForm = ({
+  onSuccessCallback,
+}: {
+  onSuccessCallback?: () => void;
+}) => {
   const [selectedPatientId, setSelectedPatientId] = useState<number>(0);
   const [testType, setTestType] = useState("");
   const [resultValue, setResultValue] = useState("");
+  const patients = usePatientStore((state) => state.patients);
+  const [mobile, setMobile] = useState(false);
 
   const { mutate: createLabResult } = useCreateLabResult(
     selectedPatientId ?? 0
   );
-  const patients = usePatientStore((state) => state.patients);
-  const [mobile, setMobile] = useState(false);
 
   useEffect(() => {
     setMobile(isMobile());
 
     const handleResize = () => setMobile(isMobile());
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -49,13 +52,26 @@ const LabResultForm = () => {
     e.preventDefault();
     if (!selectedPatientId || !testType || !resultValue) return;
 
-    createLabResult({
-      test_type: testType,
-      result_value: resultValue,
-    });
+    createLabResult(
+      {
+        test_type: testType,
+        result_value: resultValue,
+      },
+      {
+        onSuccess: () => {
+          setTestType("");
+          setResultValue("");
 
-    setTestType("");
-    setResultValue("");
+          toast.success("Lab result created successfully! ✅");
+          toast.info("You can now run AI analysis on this patient.");
+
+          if (onSuccessCallback) onSuccessCallback(); // ✅ Tab switch
+        },
+        onError: () => {
+          toast.error("Failed to submit lab result. Try again.");
+        },
+      }
+    );
   };
 
   return (
@@ -160,8 +176,8 @@ const LabResultForm = () => {
           <Image
             src="/laboratory.jpg"
             alt="Laboratory Image"
-            width={400} // Set an appropriate width
-            height={300} // Set an appropriate height
+            width={400}
+            height={300}
             className="rounded-xl shadow-md w-full max-w-sm object-cover"
           />
         </motion.div>

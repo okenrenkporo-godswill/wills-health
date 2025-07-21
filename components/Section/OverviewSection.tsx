@@ -51,14 +51,20 @@ const OverviewSection = () => {
           className="rounded-xl shadow-md"
         />
         <div className="space-y-4">
-          <h2 className="text-4xl font-bold text-blue-800">
-            Your Health, Our Mission
+          <h2 className="text-4xl font-bold text-primary">
+            Welcome to Wills Health
           </h2>
           <p className="text-gray-700 text-lg">
-            At <strong>Wills Health Center</strong>, we combine compassion,
-            innovation, and data-driven tools to deliver smarter healthcare.
-            With real-time monitoring, AI support, and digital records, your
-            wellbeing is in your hands.
+            Your Health, Powered by Care and Intelligence. Our AI-driven
+            services help you make smart decisions and stay healthy—anytime,
+            anywhere..
+            <br />
+            <strong className="text-xl text-primary  ">
+              Healing starts here
+            </strong>{" "}
+            The right answers the first time Effective treatment depends on
+            getting the right diagnosis. Our experts diagnose and treat the
+            toughest medical challenges.
           </p>
         </div>
       </motion.div>
@@ -89,7 +95,7 @@ const OverviewSection = () => {
           </p>
         </div>
       </motion.div>
-      <motion.div
+      {/* <motion.div
         className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center my-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -104,14 +110,16 @@ const OverviewSection = () => {
         />
         <div className="space-y-4">
           <h2 className="text-4xl font-bold text-blue-800">
-            AI-Powered Health Insights
+            Your Health, Our Mission
           </h2>
           <p className="text-gray-700 text-lg">
-            Our advanced AI analyzes symptoms and lab results to help doctors
-            make faster, smarter decisions—because your time and health matter.
+            At <strong>Wills Health Center</strong>, we combine compassion,
+            innovation, and data-driven tools to deliver smarter healthcare.
+            With real-time monitoring, AI support, and digital records, your
+            wellbeing is in your hands.
           </p>
         </div>
-      </motion.div>
+      </motion.div> */}
       {/* Stats Cards */}
       <motion.div
         className="grid grid-cols-1 md:grid-cols-3 gap-6"
@@ -141,6 +149,31 @@ const OverviewSection = () => {
             <p className="text-4xl text-purple-700 mt-2 font-bold">42</p>
           </CardContent>
         </Card>
+      </motion.div>
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center my-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.7 }}
+      >
+        <Image
+          src="/nurses.png"
+          alt="AI Health Insights"
+          width={600}
+          height={400}
+          className="rounded-xl shadow-md"
+        />
+        <div className="space-y-4">
+          <h2 className="text-4xl font-bold text-blue-800">
+            Your Health, Our Mission
+          </h2>
+          <p className="text-gray-700 text-lg">
+            At <strong>Wills Health Center</strong>, we combine compassion,
+            innovation, and data-driven tools to deliver smarter healthcare.
+            With real-time monitoring, AI support, and digital records, your
+            wellbeing is in your hands.
+          </p>
+        </div>
       </motion.div>
       {/* Charts */}
       <motion.div

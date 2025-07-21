@@ -16,7 +16,7 @@ import AllLabResults from "./AllLabResult";
 import Image from "next/image";
 import DiseaseBrowser from "./DiseaseBrowser";
 import Footers from "./Footers";
-import OverviewSection from "./OverviewSection";
+import { toast } from "sonner";
 import { isMobile } from "@/lib/mobile";
 
 const Dashboard = () => {
@@ -26,11 +26,10 @@ const Dashboard = () => {
   const username = useAuthStore((state) => state.username);
   const { mutate: createNewPatient } = useCreatePatient();
   const [mounted, setMounted] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview"); // 👈 Track active tab
 
-  // NEW: State to track if on mobile
   const [mobile, setMobile] = useState(false);
 
-  // Check on mount whether it's mobile
   useEffect(() => {
     setMounted(true);
     setMobile(isMobile());
@@ -47,19 +46,33 @@ const Dashboard = () => {
 
   const handleCreatePatient = (e: React.FormEvent) => {
     e.preventDefault();
-    const patientData = { name, age: Number(age), symptoms };
+
+    const patientData = {
+      name,
+      age: Number(age),
+      symptoms,
+    };
+
     createNewPatient(patientData, {
       onSuccess: () => {
         setName("");
         setAge("");
         setSymptoms("");
+
+        toast.success("Patient added successfully! 🎉");
+        toast.info("Next step: Please create a lab result for this patient.");
+        setActiveTab("lab"); // 👈 Switch to lab tab
+      },
+      onError: () => {
+        toast.error("Failed to add patient. Try again.");
       },
     });
   };
 
   return (
     <Tabs
-      defaultValue="overview"
+      value={activeTab}
+      onValueChange={setActiveTab}
       className={`min-h-screen flex ${
         mobile ? "flex-col" : "flex-row"
       } bg-white font-sans`}
@@ -70,11 +83,9 @@ const Dashboard = () => {
           mobile
             ? "w-full border-b rounded-b-2xl"
             : "md:w-[240px] md:min-h-screen md:border-r rounded-r-2xl"
-        } 
-  bg-gradient-to-b from-blue-50 to-white flex-shrink-0 shadow-sm flex flex-col`}
+        } bg-gradient-to-b from-blue-50 to-white flex-shrink-0 shadow-sm flex flex-col`}
       >
         <div className="flex flex-col justify-evenly h-[100px] md:h-[600px] p-6">
-          {/* Tabs List - Vertical for desktop, Horizontal for mobile */}
           <TabsList
             className={`${
               mobile ? "flex flex-row gap-1" : "flex flex-col gap-2"
@@ -99,7 +110,6 @@ const Dashboard = () => {
             ))}
           </TabsList>
 
-          {/* Profile Section - Hide on mobile */}
           {!mobile && (
             <div className="flex items-center space-x-3 border-t pt-6 mt-10">
               <Image
@@ -121,7 +131,7 @@ const Dashboard = () => {
       </aside>
 
       {/* Main content */}
-      <main className={`flex-1 pt-6 px-4 md:px-6 md:pt-10 overflow-y-auto`}>
+      <main className="flex-1 pt-6 px-4 md:px-6 md:pt-10 overflow-y-auto">
         <motion.header
           className="mb-10"
           initial={{ opacity: 0, y: -20 }}
@@ -138,11 +148,6 @@ const Dashboard = () => {
             Welcome back, {username || "Guest"} 👋
           </p>
         </motion.header>
-
-        {/* Content Tabs */}
-        <TabsContent value="overview">
-          <OverviewSection />
-        </TabsContent>
 
         <TabsContent value="patients">
           <motion.div
@@ -189,7 +194,7 @@ const Dashboard = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <LabResultForm />
+            <LabResultForm onSuccessCallback={() => setActiveTab("ai")} />
             <AllLabResults />
           </motion.div>
         </TabsContent>

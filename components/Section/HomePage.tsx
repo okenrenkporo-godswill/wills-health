@@ -1,10 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import Image from "next/image";
-import Link from "next/link";
-import Footer from "./Footer";
+
 import { isMobile } from "@/lib/mobile";
+import OverviewSection from "./OverviewSection";
+import Hero from "./Hero";
+import Footers from "./Footers";
+import DiseaseBrowser from "./DiseaseBrowser";
 
 const HomePage = () => {
   const [mobile, setMobile] = useState(false);
@@ -19,67 +21,20 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-100">
+    <div
+      className={`${
+        mobile ? "w-full " : "w-full"
+      } flex min-h-screen flex-col bg-gray-100`}
+    >
       <Header />
+      <Hero />
 
-      {mobile ? (
-        // 👉 MOBILE VIEW
-        <div className="flex flex-col items-center text-center p-4 space-y-4">
-          <Image
-            src="/backs.webp"
-            alt="bg"
-            width={300}
-            height={300}
-            className="rounded-lg border shadow"
-          />
-          <h1 className="text-primary font-bold text-xl">
-            Welcome to Wills Health
-          </h1>
-          <p className="text-gray-600 text-sm px-2">
-            Your Health, Powered by Care and Intelligence. Our AI-driven
-            services help you make smart decisions and stay healthy—anytime,
-            anywhere.
-          </p>
-          <Link
-            href="/login"
-            className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-800 transition"
-          >
-            Start Now
-          </Link>
-        </div>
-      ) : (
-        // 👉 DESKTOP VIEW
-        <div className="flex flex-1 px-4 items-center py-2 gap-6 flex-wrap justify-center">
-          <Image
-            src="/backs.webp"
-            alt="bg"
-            width={600}
-            height={750}
-            className="rounded-md border shadow-lg"
-          />
-          <div className="font-bold text-2xl max-w-xl">
-            <p>
-              <span className="text-primary text-3xl">
-                Welcome to Wills Health – Your Health, Powered by Care and
-                Intelligence.
-              </span>{" "}
-              <span className="text-gray-500 italic">
-                Our AI-driven services help you make informed decisions, track
-                your wellness, and access support anytime—so you&rsquo;re never
-                alone on your health journey.
-              </span>
-            </p>
-            <Link
-              href="/login"
-              className="inline-block mt-4 rounded-sm border p-2 text-sm bg-primary text-white hover:text-gray-300"
-            >
-              Start Now
-            </Link>
-          </div>
-        </div>
-      )}
-
-      <Footer />
+      {/* Main content with padding */}
+      <div className="px-4 md:px-8 lg:px-16 py-6 space-y-8">
+        <DiseaseBrowser />
+        <OverviewSection />
+        <Footers />
+      </div>
     </div>
   );
 };
