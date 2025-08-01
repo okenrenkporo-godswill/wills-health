@@ -16,6 +16,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import Link from "next/link";
 
 const labData = [
   { name: "Mon", wbc: 3.2, glucose: 90 },
@@ -176,6 +177,24 @@ const OverviewSection = () => {
         </div>
       </motion.div>
       {/* Charts */}
+      <Card className="shadow-md bg-gradient-to-r from-blue-50 to-blue-100">
+        <CardContent className="space-y-4">
+          <h3 className="text-2xl font-semibold text-primary">
+            Daily Wellness Tip
+          </h3>
+          <p className="text-gray-700">
+            🌿 Stay hydrated and aim for at least 7 hours of sleep. Rest is as
+            important as activity in your wellness journey.
+          </p>
+          <Link
+            href="/wellness"
+            className="text-blue-600 underline font-medium"
+          >
+            Learn more wellness tips →
+          </Link>
+        </CardContent>
+      </Card>
+
       <motion.div
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
         initial={{ opacity: 0 }}
@@ -228,6 +247,7 @@ const OverviewSection = () => {
         </Card>
       </motion.div>
       {/* Call to Action */}
+
       <motion.div
         className="mt-12 p-8 bg-blue-50 border border-blue-100 rounded-lg shadow-sm text-center"
         initial={{ opacity: 0 }}
@@ -242,9 +262,12 @@ const OverviewSection = () => {
           Discover the peace of mind that comes with precision medicine,
           intelligent monitoring, and healthcare that truly cares.
         </p>
-        <button className="px-6 py-3 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition">
+        <Link
+          href={"/register"}
+          className="px-6 py-3 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition"
+        >
           Start Your Journey with Us
-        </button>
+        </Link>
       </motion.div>
     </div>
   );

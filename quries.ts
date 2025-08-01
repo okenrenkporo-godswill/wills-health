@@ -30,6 +30,50 @@ export const usePatient = () => {
   });
 };
 
+export const useLabResults = (patientId: number) => {
+  const { token } = useAuthStore();
+  const setLabResults = useLaboratoryStore().setLabResults;
+
+  return useQuery({
+    queryKey: ["labresults", patientId], // 🗝️ Add patient ID to cache key
+    enabled: !!token && !!patientId, // ✅ Run only if token and ID exist
+    queryFn: async () => {
+      const res = await axios.get(`${BASE_URL}/labresults/${patientId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const labResults = res.data.data;
+      setLabResults(labResults);
+      return labResults;
+    },
+  });
+};
+
+// quries/index.ts
+
+export const useAllLabResults = () => {
+  const { token } = useAuthStore();
+  const setLabResults = useLaboratoryStore((state) => state.setLabResults);
+
+  return useQuery({
+    queryKey: ["labResults"],
+    enabled: !!token,
+    queryFn: async () => {
+      const res = await axios.get(`${BASE_URL}/labresult`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const labResults = res.data.data;
+      setLabResults(labResults);
+      return labResults;
+    },
+  });
+};
+
 // interface CreatePatient {
 //   name: string;
 //   age: number;

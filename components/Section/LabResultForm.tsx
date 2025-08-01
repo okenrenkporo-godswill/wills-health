@@ -6,24 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { usePatientStore } from "@/store/usePatientstore";
 import { useCreateLabResult } from "@/quries";
-import AllLabResults from "./AllLabResult";
+
 import Image from "next/image";
 import { isMobile } from "@/lib/mobile";
 import { toast } from "sonner";
-
-const labInvestigations = [
-  "Full Blood Count (FBC)",
-  "Liver Function Test (LFT)",
-  "Kidney Function Test (KFT)",
-  "Malaria Parasite",
-  "HIV Test",
-  "Blood Sugar",
-  "Electrolytes",
-  "Urinalysis",
-  "X-Ray",
-  "CT Scan",
-  "MRI",
-];
+import AllLabResults from "./AllLabResult";
 
 const LabResultForm = ({
   onSuccessCallback,
@@ -65,7 +52,7 @@ const LabResultForm = ({
           toast.success("Lab result created successfully! ✅");
           toast.info("You can now run AI analysis on this patient.");
 
-          if (onSuccessCallback) onSuccessCallback(); // ✅ Tab switch
+          if (onSuccessCallback) onSuccessCallback();
         },
         onError: () => {
           toast.error("Failed to submit lab result. Try again.");
@@ -78,7 +65,7 @@ const LabResultForm = ({
     <motion.div
       className={`${
         mobile ? "w-full px-4" : "w-full"
-      }  max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg border border-blue-200`}
+      } max-w-6xl mx-auto mt-10 p-6 bg-gradient-to-br from-white to-blue-50 rounded-2xl shadow-lg border border-blue-100`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
@@ -92,23 +79,20 @@ const LabResultForm = ({
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4 }}
           >
-            <Image src="/logo.png" alt="Lab" width={100} height={100} />
-            <h2 className="text-2xl font-bold text-blue-700">
-              Laboratory Request Form
+            <Image src="/logo.png" alt="Lab" width={90} height={90} />
+            <h2 className="text-2xl font-semibold text-blue-800">
+              Laboratory Result Entry
             </h2>
           </motion.div>
 
-          <form
-            onSubmit={handleCreateLabResult}
-            className="space-y-5 transition-all duration-500"
-          >
+          <form onSubmit={handleCreateLabResult} className="space-y-6">
             {/* Patient Selector */}
             <div>
-              <label className="block font-medium mb-1 text-blue-900">
+              <label className="block font-medium mb-2 text-gray-700">
                 Select Patient:
               </label>
               <select
-                className="w-full p-3 border border-blue-300 rounded-lg text-gray-800 bg-white"
+                className="w-full p-3 border border-blue-300 rounded-md bg-white focus:ring-2 focus:ring-blue-400"
                 onChange={(e) => setSelectedPatientId(Number(e.target.value))}
                 value={selectedPatientId}
               >
@@ -121,46 +105,41 @@ const LabResultForm = ({
               </select>
             </div>
 
-            {/* Investigation List */}
+            {/* Free Text Input for Investigation */}
             <div>
-              <label className="block font-medium mb-1 text-blue-900">
-                Laboratory Investigation:
+              <label className="block font-medium mb-2 text-gray-700">
+                Investigation Name:
               </label>
-              <select
-                className="w-full p-3 border border-blue-300 rounded-lg text-gray-800 bg-white"
+              <input
+                type="text"
+                className="w-full p-3 border border-blue-300 rounded-md bg-white focus:ring-2 focus:ring-blue-400"
+                placeholder="e.g., Full Blood Count, Malaria Test, etc."
                 value={testType}
                 onChange={(e) => setTestType(e.target.value)}
-              >
-                <option value="">🧪 Select Investigation</option>
-                {labInvestigations.map((test) => (
-                  <option key={test} value={test}>
-                    {test}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Result Entry */}
-            <div>
-              <label className="block font-medium mb-1 text-blue-900">
-                Result:
-              </label>
-              <Textarea
-                placeholder="Enter result details..."
-                value={resultValue}
-                onChange={(e) => setResultValue(e.target.value)}
-                className="bg-white border border-blue-300 text-gray-900"
               />
             </div>
 
-            {/* Submit */}
+            {/* Result Textarea */}
+            <div>
+              <label className="block font-medium mb-2 text-gray-700">
+                Result Details:
+              </label>
+              <Textarea
+                placeholder="Enter lab result details here..."
+                value={resultValue}
+                onChange={(e) => setResultValue(e.target.value)}
+                className="bg-white border border-blue-300 text-gray-800 focus:ring-2 focus:ring-blue-400"
+              />
+            </div>
+
+            {/* Submit Button */}
             <div className="text-right">
               <Button
                 type="submit"
                 disabled={!selectedPatientId || !testType || !resultValue}
-                className="bg-blue-700 hover:bg-blue-900 text-white px-6 py-3 rounded-lg shadow transition"
+                className="bg-blue-700 hover:bg-blue-900 text-white px-6 py-3 rounded-lg shadow-md transition"
               >
-                Submit Lab Result
+                Save Lab Result
               </Button>
             </div>
           </form>
@@ -175,20 +154,20 @@ const LabResultForm = ({
         >
           <Image
             src="/laboratory.jpg"
-            alt="Laboratory Image"
-            width={400}
-            height={300}
-            className="rounded-xl shadow-md w-full max-w-sm object-cover"
+            alt="Lab"
+            width={450}
+            height={320}
+            className="rounded-xl shadow-lg object-cover w-full max-w-md"
           />
         </motion.div>
       </div>
 
-      {/* All Lab Results Section */}
+      {/* Lab Results Table */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
-        className="mt-10"
+        className="mt-12"
       >
         <AllLabResults />
       </motion.div>

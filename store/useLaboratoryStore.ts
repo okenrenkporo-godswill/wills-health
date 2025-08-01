@@ -2,6 +2,7 @@
 import { create } from "zustand";
 
 export interface LabResult {
+  id: number; // make sure your backend includes an 'id' field
   patient_id: number;
   test_type: string;
   result_value: string;

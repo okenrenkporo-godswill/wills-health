@@ -9,9 +9,9 @@ const page = () => {
       <Header />
       <div className="w-full  items-center flex flex-col  gap-1 p-5">
         <p>
-          REGISTER TO{" "}
+          AlREADY have An Account{" "}
           <Link href={"/"} className="text-primary font-bold italic underline">
-            WILL HEALTH
+            LOGIN TO WILL HEALTH
           </Link>
         </p>
         <Register />
