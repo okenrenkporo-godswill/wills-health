@@ -60,7 +60,8 @@ const Login = () => {
       } else {
         toast.error(data.error || "Login failed");
       }
-    } catch (error) {
+    } catch (err) {
+      console.error("Login error:", err); // ✅ Now `err` is used
       toast.error("Network error");
     } finally {
       setLoading(false);
