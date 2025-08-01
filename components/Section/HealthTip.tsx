@@ -9,7 +9,7 @@ const HealthTip = () => {
     <Card className="shadow-sm">
       <CardContent className="p-6">
         <h3 className="text-lg font-bold text-gray-800 mb-2">
-          Today's Health Tip
+          Today is Health Tip
         </h3>
         <p className="text-sm text-gray-700">
           💧 Stay hydrated and encourage your patients to drink at least 8

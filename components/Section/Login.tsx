@@ -152,7 +152,7 @@ const Login = () => {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full bg-primary hover:bg-blue-800 text-black"
+            className="w-full bg-primary hover:bg-blue-800 text-white"
             disabled={loading}
           >
             Login

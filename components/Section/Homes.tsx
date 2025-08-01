@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { User, Bell, CalendarCheck, HeartPulse } from "lucide-react";
+import { Bell, CalendarCheck, HeartPulse } from "lucide-react";
 import QuickStats from "./QuickStats";
 import Notifications from "./Notifications";
 import Appointments from "./Appointments";

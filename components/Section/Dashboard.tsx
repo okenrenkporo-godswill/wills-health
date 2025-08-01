@@ -31,7 +31,7 @@ const Dashboard = () => {
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
   const [mobile, setMobile] = useState(false);
-  const [sliderView, setSliderView] = useState(false);
+  const [sliderView] = useState(false);
 
   const router = useRouter();
 

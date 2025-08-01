@@ -1,4 +1,3 @@
-// components/AllLabResults.tsx
 "use client";
 
 import React from "react";
@@ -8,7 +7,7 @@ import { useLaboratoryStore } from "@/store/useLaboratoryStore";
 import { useAllLabResults } from "@/quries";
 
 const AllLabResults = () => {
-  const { isLoading, isError, data } = useAllLabResults();
+  const { isLoading, isError } = useAllLabResults();
   const labResults = useLaboratoryStore((state) => state.labResults);
 
   return (
