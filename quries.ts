@@ -66,19 +66,12 @@ export const useAllLabResults = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
       const labResults = res.data.data;
-      setLabResults(labResults);
+      setLabResults(labResults); // ✅ set Zustand state
       return labResults;
     },
   });
 };
-
-// interface CreatePatient {
-//   name: string;
-//   age: number;
-//   symptoms: string;
-// }
 
 export const useCreatePatient = () => {
   const { token } = useAuthStore();

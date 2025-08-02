@@ -3,11 +3,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { useLaboratoryStore } from "@/store/useLaboratoryStore";
 import { useAllLabResults } from "@/quries";
+import { useLaboratoryStore } from "@/store/useLaboratoryStore";
 
 const AllLabResults = () => {
+  // fetch data using TanStack Query (and it sets Zustand internally)
   const { isLoading, isError } = useAllLabResults();
+
+  // subscribe to Zustand store for reactivity
   const labResults = useLaboratoryStore((state) => state.labResults);
 
   return (
@@ -18,11 +21,11 @@ const AllLabResults = () => {
         {isLoading && <div>Loading...</div>}
         {isError && <div>Failed to load lab results.</div>}
 
-        {!isLoading && labResults.length === 0 && (
+        {!isLoading && labResults?.length === 0 && (
           <div>No lab results found.</div>
         )}
 
-        {!isLoading && labResults.length > 0 && (
+        {!isLoading && labResults?.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

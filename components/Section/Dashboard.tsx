@@ -21,6 +21,7 @@ import Homes from "./Homes";
 import HomeTwo from "./HomeTwo";
 
 import VitalSlider from "./Vitalslider";
+import AllPatient from "./AllPatient";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -269,7 +270,7 @@ const Dashboard = () => {
                   </Button>
                 </CardContent>
               </Card>
-              {/* <AllPatient /> */}
+              {mobile && <AllPatient />}
             </motion.div>
           </TabsContent>
 
