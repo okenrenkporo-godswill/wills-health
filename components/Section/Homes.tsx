@@ -73,7 +73,7 @@ const Homes = () => {
         >
           <motion.div
             key={currentSlide}
-            className="rounded-xlshadow-lg p-4 flex items-start gap-3"
+            className="rounded-xl bg-white/10 backdrop-blur-md shadow-lg p-4 flex items-start gap-3"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}

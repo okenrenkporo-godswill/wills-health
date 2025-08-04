@@ -6,7 +6,7 @@ import { CalendarCheck, FlaskConical, HeartPulse } from "lucide-react";
 
 const stats = [
   {
-    icon: <CalendarCheck className="text-blue-600 w-8 h-8" />,
+    icon: <CalendarCheck className="text-blue-600 w-7 h-8" />,
     title: "Appointments",
     value: "12 Today",
   },
@@ -30,7 +30,7 @@ const QuickStats = () => {
           key={index}
           className="flex-1 min-w-[10rem] bg-white shadow-md hover:shadow-lg transition-all"
         >
-          <CardContent className="flex items-center gap-4 p-6">
+          <CardContent className="flex items-center gap-3 p-6">
             {stat.icon}
             <div>
               <p className="text-sm text-gray-500">{stat.title}</p>

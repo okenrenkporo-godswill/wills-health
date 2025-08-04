@@ -20,7 +20,6 @@ import {
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Image from "next/image";
 
-// ✅ Schema
 const formSchema = z.object({
   username: z
     .string()
@@ -31,19 +30,15 @@ const formSchema = z.object({
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // 👁️ toggle state
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      password: "",
-    },
+    defaultValues: { username: "", password: "" },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
-
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
@@ -61,32 +56,22 @@ const Login = () => {
         toast.error(data.error || "Login failed");
       }
     } catch (err) {
-      console.error("Login error:", err); // ✅ Now `err` is used
       toast.error("Network error");
     } finally {
       setLoading(false);
     }
   };
 
-  // ⏳ Full-screen loading screen
-  if (loading) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black text-white">
-        <div className="text-center space-y-4">
-          <Loader2 className="h-16 w-16 animate-spin mx-auto" />
-          <div>
-            <h1 className="text-3xl font-bold">Logging in...</h1>
-            <p className="text-sm">Thanks for trusting Wills Health.</p>
-            <p className="text-sm">We’re preparing your health dashboard...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // 🧾 Login Form
   return (
-    <div className="flex flex-col justify-center px-6 py-10 w-full max-w-md bg-white shadow-xl rounded-xl border border-blue-100">
+    <div className="relative w-full max-w-md bg-white shadow-xl rounded-xl border border-blue-100 p-6">
+      {/* Overlay Loader */}
+      {loading && (
+        <div className="absolute inset-0 bg-white/70 flex flex-col items-center justify-center z-50 rounded-xl">
+          <Loader2 className="h-10 w-10 animate-spin text-blue-600 mb-2" />
+          <p className="text-sm font-medium text-blue-800">Logging in...</p>
+        </div>
+      )}
+
       <h2 className="text-2xl font-bold text-primary mb-2">
         Welcome Back To Wills Health
       </h2>
@@ -111,7 +96,7 @@ const Login = () => {
             )}
           />
 
-          {/* Password with Eye Toggle */}
+          {/* Password */}
           <FormField
             control={form.control}
             name="password"
@@ -150,7 +135,7 @@ const Login = () => {
             </a>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <Button
             type="submit"
             className="w-full bg-primary hover:bg-blue-800 text-white"
@@ -159,7 +144,7 @@ const Login = () => {
             Login
           </Button>
 
-          {/* Google Login */}
+          {/* Google login */}
           <div className="text-center text-sm text-gray-500 mt-4">
             or login with
           </div>
