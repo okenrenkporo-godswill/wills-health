@@ -17,7 +17,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Link, Loader2 } from "lucide-react";
 import Image from "next/image";
 
 const formSchema = z.object({
@@ -159,10 +159,10 @@ const Login = () => {
 
           {/* Sign up link */}
           <p className="text-center text-sm text-gray-600">
-            Don’t have an account?{" "}
-            <a href="/register" className="text-blue-600 hover:underline">
-              Sign up
-            </a>
+            Dont have an account?{" "}
+            <Link href="/login" className="text-blue-600 hover:underline">
+              Login
+            </Link>
           </p>
         </form>
       </Form>

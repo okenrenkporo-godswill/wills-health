@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Link, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -59,7 +59,8 @@ function Register() {
       } else {
         toast.error(data.error || "Something went wrong");
       }
-    } catch (error) {
+    } catch {
+      // no unused variable now
       toast.error("Network error");
     } finally {
       setLoading(false);
@@ -129,9 +130,9 @@ function Register() {
           {/* Link to Login */}
           <p className="text-center text-sm text-gray-600">
             Already have an account?{" "}
-            <a href="/" className="text-blue-600 hover:underline">
+            <Link href="/login" className="text-blue-600 hover:underline">
               Login
-            </a>
+            </Link>
           </p>
         </form>
       </Form>
