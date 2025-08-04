@@ -1,13 +1,13 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Link, Loader2 } from "lucide-react";
-
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,23 +17,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useAuthStore } from "@/store/useAuthStore"; // Make sure this is correct
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 const formSchema = z.object({
   username: z
     .string()
     .min(2, { message: "Username must be at least 2 characters." }),
-  password: z
-    .string()
-    .min(4, { message: "Password must be at least 4 characters." })
-    .max(12, { message: "Password must be at most 12 characters." }),
+  password: z.string().min(4, "Minimum 4 characters"),
 });
 
-function Register() {
+const Register = () => {
   const router = useRouter();
-  const setAuth = useAuthStore((state) => state.setAuth);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,15 +50,15 @@ function Register() {
       const data = await res.json();
 
       if (res.ok) {
-        // Save auth and redirect to dashboard
-        setAuth(data.username, data.token);
+        // Auto login after register
+        useAuthStore.getState().setAuth(data.username, data.token);
         toast.success("Account created successfully 🎉");
         router.push("/user/dashboard");
       } else {
-        toast.error(data.error || "Something went wrong");
+        toast.error(data.error || "Registration failed");
       }
-    } catch {
-      // no unused variable now
+    } catch (error) {
+      console.error("Register error:", error);
       toast.error("Network error");
     } finally {
       setLoading(false);
@@ -69,7 +67,7 @@ function Register() {
 
   return (
     <div className="relative w-full max-w-md bg-white shadow-xl rounded-xl border border-blue-100 p-6">
-      {/* Loader Overlay */}
+      {/* Overlay Loader */}
       {loading && (
         <div className="absolute inset-0 bg-white/70 flex flex-col items-center justify-center z-50 rounded-xl">
           <Loader2 className="h-10 w-10 animate-spin text-blue-600 mb-2" />
@@ -83,7 +81,7 @@ function Register() {
         Create Your Wills Health Account
       </h2>
       <p className="text-sm text-gray-500 mb-6">
-        Join us and start managing your health smarter.
+        Join us and take control of your health journey today.
       </p>
 
       <Form {...form}>
@@ -96,7 +94,7 @@ function Register() {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Your username" {...field} />
+                  <Input placeholder="Choose a username" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -110,9 +108,22 @@ function Register() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
-                </FormControl>
+                <div className="relative">
+                  <FormControl>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="••••••••"
+                      {...field}
+                      className="pr-10"
+                    />
+                  </FormControl>
+                  <div
+                    className="absolute top-1/2 right-3 -translate-y-1/2 text-gray-500 hover:text-black cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </div>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -127,10 +138,23 @@ function Register() {
             Register
           </Button>
 
-          {/* Link to Login */}
+          {/* Google Register */}
+          <div className="text-center text-sm text-gray-500 mt-4">
+            or sign up with
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full flex justify-center gap-2 text-gray-700 border-gray-300"
+          >
+            <Image src="/goggle.png" alt="Google" width={20} height={20} />
+            Continue With Google
+          </Button>
+
+          {/* Login link */}
           <p className="text-center text-sm text-gray-600">
             Already have an account?{" "}
-            <Link href="/login" className="text-blue-600 hover:underline">
+            <Link href="/" className="text-blue-600 hover:underline">
               Login
             </Link>
           </p>
@@ -138,6 +162,6 @@ function Register() {
       </Form>
     </div>
   );
-}
+};
 
 export default Register;

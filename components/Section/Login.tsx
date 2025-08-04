@@ -17,7 +17,8 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Eye, EyeOff, Link, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import Link from "next/link";
 import Image from "next/image";
 
 const formSchema = z.object({
@@ -58,6 +59,9 @@ const Login = () => {
     } catch (err) {
       console.error("Login error:", err);
       toast.error("Network error");
+    } finally {
+      // ✅ Always stop loading
+      setLoading(false);
     }
   };
 
@@ -158,9 +162,9 @@ const Login = () => {
 
           {/* Sign up link */}
           <p className="text-center text-sm text-gray-600">
-            Dont have an account?{" "}
-            <Link href="/login" className="text-blue-600 hover:underline">
-              Login
+            Don’t have an account?{" "}
+            <Link href="/register" className="text-blue-600 hover:underline">
+              Sign Up
             </Link>
           </p>
         </form>
