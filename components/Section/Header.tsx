@@ -10,7 +10,7 @@ import { isMobile } from "@/lib/mobile";
 
 import Logo from "./Logo";
 import AccountDetailsCard from "./AccountDetailCard";
-import TextSlider from "./TextSlider";
+
 import HeaderSlider from "./HeaderSlider";
 
 const Header = () => {

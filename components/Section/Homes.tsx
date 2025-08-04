@@ -7,8 +7,6 @@ import QuickStats from "./QuickStats";
 import Notifications from "./Notifications";
 import Appointments from "./Appointments";
 import HealthTip from "./HealthTip";
-import ImageSlider from "./ImageSlider";
-import AllPatient from "./AllPatient";
 
 const sliderItems = [
   {

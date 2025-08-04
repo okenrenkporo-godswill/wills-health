@@ -2,7 +2,7 @@
 
 import Login from "@/components/Section/Login";
 import Header from "@/components/Section/Header";
-import Footers from "@/components/Section/Footers";
+
 import { motion } from "framer-motion";
 import Image from "next/image";
 
