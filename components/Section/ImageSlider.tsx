@@ -10,9 +10,9 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 const sliderImages = [
-  { src: "/herosec.jpg", text: "Compassion meets technology." },
-  { src: "/laboratory.jpg", text: "Caring made smarter." },
-  { src: "/nurse.jpg", text: "Health starts with insight." },
+  { src: "/slider2.jpg", text: "Compassion meets technology." },
+  { src: "/slider1.webp", text: "Caring made smarter." },
+  { src: "/slider3.jpg", text: "Health starts with insight ." },
 ];
 
 const ImageSlider = () => {

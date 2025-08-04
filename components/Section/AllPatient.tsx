@@ -44,7 +44,7 @@ const AllPatient = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {patients?.map((patient) => {
+                  {patients?.slice(0, 5).map((patient) => {
                     const lab = getLabResultForPatient(patient.id);
 
                     return (

@@ -13,6 +13,9 @@ const AllLabResults = () => {
   // subscribe to Zustand store for reactivity
   const labResults = useLaboratoryStore((state) => state.labResults);
 
+  // get only the first 5 results
+  const firstFiveResults = labResults?.slice(0, 5) || [];
+
   return (
     <Card className="bg-white text-black">
       <CardContent className="p-4">
@@ -21,11 +24,11 @@ const AllLabResults = () => {
         {isLoading && <div>Loading...</div>}
         {isError && <div>Failed to load lab results.</div>}
 
-        {!isLoading && labResults?.length === 0 && (
+        {!isLoading && firstFiveResults.length === 0 && (
           <div>No lab results found.</div>
         )}
 
-        {!isLoading && labResults?.length > 0 && (
+        {!isLoading && firstFiveResults.length > 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -41,7 +44,7 @@ const AllLabResults = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {labResults.map((result) => (
+                  {firstFiveResults.map((result) => (
                     <tr
                       key={result.id}
                       className="border-t border-gray-100 hover:bg-gray-50"

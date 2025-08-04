@@ -61,7 +61,7 @@ export const useAllLabResults = () => {
     queryKey: ["labResults"],
     enabled: !!token,
     queryFn: async () => {
-      const res = await axios.get(`${BASE_URL}/labresult`, {
+      const res = await axios.get(`${BASE_URL}/labresult/all_labresult`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

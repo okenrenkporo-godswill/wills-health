@@ -15,13 +15,21 @@ import AIAnalysis from "./AiAnalysis";
 import Image from "next/image";
 import DiseaseBrowser from "./DiseaseBrowser";
 import { toast } from "sonner";
-import { isMobile } from "@/lib/mobile";
 import { useRouter } from "next/navigation";
 import Homes from "./Homes";
 import HomeTwo from "./HomeTwo";
-
 import VitalSlider from "./Vitalslider";
 import AllPatient from "./AllPatient";
+import HomeThree from "./HomeThree";
+import ImageSlider from "./ImageSlider";
+
+import {
+  BrainCircuit,
+  FlaskConical,
+  HeartPulse,
+  Home,
+  UserRound,
+} from "lucide-react";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -31,21 +39,19 @@ const Dashboard = () => {
   const { mutate: createNewPatient } = useCreatePatient();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
-  const [mobile, setMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [sliderView] = useState(false);
-
   const router = useRouter();
 
   useEffect(() => {
-    setMounted(true);
-    setMobile(isMobile());
-
-    const handleResize = () => setMobile(isMobile());
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
+
+    setMounted(true);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   if (!mounted) return null;
@@ -64,7 +70,6 @@ const Dashboard = () => {
         setName("");
         setAge("");
         setSymptoms("");
-
         toast.success("Patient added successfully! 🎉");
         toast.info("Next step: Please create a lab result for this patient.");
         setActiveTab("lab");
@@ -77,56 +82,90 @@ const Dashboard = () => {
 
   return (
     <>
-      {!mobile && <VitalSlider />}
+      {!isMobile && <VitalSlider />}
 
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
         className={`min-h-screen flex ${
-          mobile ? "flex-col" : "flex-row"
+          isMobile ? "flex-col" : "flex-row"
         } bg-gradient-to-b from-white to-black/50 font-sans`}
       >
-        {/* Sidebar / Mobile Bottom Nav */}
         <aside
           className={`${
-            mobile
+            isMobile
               ? "w-full"
               : "md:w-[240px] md:min-h-screen md:border-r rounded-r-2xl"
           } bg-gradient-to-b from-blue-50 to-white flex-shrink-0 shadow-sm flex flex-col`}
         >
           <div
             className={`${
-              mobile
+              isMobile
                 ? "fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t z-50 flex justify-around px-4 py-2 shadow-md"
                 : "flex flex-col justify-evenly h-[100px] md:h-[600px] p-6"
             }`}
           >
             <TabsList
               className={`${
-                mobile ? "flex w-full gap-1" : "flex flex-col gap-2 w-full p-0"
+                isMobile
+                  ? "flex w-full gap-1"
+                  : "flex flex-col gap-2 w-full p-0"
               } bg-transparent shadow-none text-left`}
             >
+              {isMobile && (
+                <div className="flex items-center justify-center w-full mb-1">
+                  <HeartPulse className="text-blue-600" size={20} />
+                </div>
+              )}
+
               {[
-                { label: "Home", value: "home" },
-                { label: "Conditions", value: "conditions" },
-                { label: "Patients", value: "patients" },
-                { label: "Lab Results", value: "lab" },
-                { label: "AI Analysis", value: "ai" },
+                {
+                  label: "Home",
+                  value: "home",
+                  icon: <Home className="w-4 h-4 mr-1" />,
+                },
+                ...(isMobile
+                  ? []
+                  : [
+                      {
+                        label: "Conditions",
+                        value: "conditions",
+                        icon: <HeartPulse className="w-4 h-4 mr-1" />,
+                      },
+                    ]),
+                {
+                  label: "Patients",
+                  value: "patients",
+                  icon: <UserRound className="w-4 h-4 mr-1" />,
+                },
+                {
+                  label: "Lab Results",
+                  value: "lab",
+                  icon: <FlaskConical className="w-4 h-4 mr-1" />,
+                },
+                {
+                  label: "AI Analysis",
+                  value: "ai",
+                  icon: <BrainCircuit className="w-4 h-4 mr-1" />,
+                },
               ].map((tab) => (
                 <TabsTrigger
                   key={tab.value}
                   value={tab.value}
-                  className={`w-full justify-start px-4 py-2 rounded-md text-sm text-blue-900 font-medium hover:bg-blue-100 hover:text-blue-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white transition-all ${
-                    mobile ? "text-xs px-2 py-1" : ""
-                  }`}
+                  className={`${
+                    isMobile
+                      ? "flex flex-col items-center text-xs px-2 py-2 gap-1"
+                      : "flex items-center text-sm px-4 py-2 gap-2"
+                  } w-full rounded-md text-blue-900 font-medium hover:bg-blue-100 hover:text-blue-700 data-[state=active]:bg-blue-600 data-[state=active]:text-white transition-all`}
                 >
-                  {tab.label}
+                  {tab.icon}
+                  <span>{tab.label}</span>
                 </TabsTrigger>
               ))}
             </TabsList>
           </div>
 
-          {!mobile && (
+          {!isMobile && (
             <>
               <Button
                 onClick={() => router.push("/result")}
@@ -154,10 +193,9 @@ const Dashboard = () => {
           )}
         </aside>
 
-        {/* Main content */}
         <main
           className={`flex-1 pt-6 px-4 md:px-6 md:pt-10 overflow-y-auto ${
-            mobile ? "pb-24" : ""
+            isMobile ? "pb-24" : ""
           }`}
         >
           <motion.header
@@ -176,13 +214,12 @@ const Dashboard = () => {
               Welcome back, {username || "Guest"} 👋
             </p>
           </motion.header>
-          <TabsContent value="home">
-            {/* View Toggle Button */}
 
-            {/* Cards Section */}
+          {/* HOME TAB */}
+          <TabsContent value="home">
             <motion.div
               className={`${
-                mobile
+                isMobile
                   ? sliderView
                     ? "flex overflow-x-auto gap-4 snap-x snap-mandatory"
                     : "flex flex-col gap-4"
@@ -192,41 +229,31 @@ const Dashboard = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              {/* First Card - Always Visible */}
               <div
-                className={`${
-                  mobile
-                    ? sliderView
-                      ? "min-w-[90%] snap-start"
-                      : "w-full"
-                    : "w-full md:w-[48%]"
-                }`}
+                className={`${isMobile ? "w-full px-1" : "w-full md:w-[48%]"}`}
               >
-                <Card className="bg-white shadow border">
-                  <CardContent className="p-6 space-y-4">
-                    <Homes />
-                    <Button
-                      onClick={() => setActiveTab("patients")}
-                      className="bg-blue-600 hover:bg-blue-700 text-white w-full"
-                    >
-                      Go to Patient Section
-                    </Button>
-                  </CardContent>
-                </Card>
+                <div className="bg-transparent md:bg-white shadow md:shadow w-full rounded-xl p-2 space-y-1">
+                  <ImageSlider />
+                  <Homes />
+                  <Button
+                    onClick={() => setActiveTab("patients")}
+                    className="bg-blue-600 hover:bg-blue-700 text-white w-full"
+                  >
+                    Go to Patient Section
+                  </Button>
+                </div>
               </div>
 
-              {/* Second Card - Desktop Only */}
-              {!mobile && (
-                <div className="w-full md:w-[48%]">
+              {!isMobile && (
+                <div className="w-full md:w-[48%] flex flex-col gap-6">
                   <Card className="bg-white shadow border">
                     <CardContent className="p-6 space-y-4">
                       <HomeTwo />
-                      <Button
-                        onClick={() => setActiveTab("lab")}
-                        className="bg-blue-600 hover:bg-blue-700 text-white w-full"
-                      >
-                        Go to Lab Result
-                      </Button>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-white shadow border">
+                    <CardContent className="p-6 space-y-4">
+                      <HomeThree />
                     </CardContent>
                   </Card>
                 </div>
@@ -238,7 +265,7 @@ const Dashboard = () => {
           <TabsContent value="patients">
             <motion.div
               className={`grid grid-cols-1 ${
-                mobile ? "" : "md:grid-cols-2"
+                isMobile ? "" : "md:grid-cols-2"
               } gap-6`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -270,7 +297,7 @@ const Dashboard = () => {
                   </Button>
                 </CardContent>
               </Card>
-              {mobile && <AllPatient />}
+              {isMobile && <AllPatient />}
             </motion.div>
           </TabsContent>
 
@@ -306,20 +333,6 @@ const Dashboard = () => {
               <DiseaseBrowser />
             </motion.div>
           </TabsContent>
-
-          {/* APPOINTMENTS */}
-          {/* <motion.section
-          className="mt-20 max-w-6xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <Card className="bg-white border shadow-md">
-            <CardContent className="p-6 text-gray-700">
-              <p className="text-center">No appointments scheduled yet.</p>
-            </CardContent>
-          </Card>
-        </motion.section> */}
         </main>
       </Tabs>
     </>

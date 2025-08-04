@@ -43,9 +43,7 @@ const LoginPage = () => {
       </div>
 
       {/* Footer (desktop only) */}
-      <div className="hidden sm:block z-10">
-        <Footers />
-      </div>
+      <div className="hidden sm:block z-10">{/* <Footers /> */}</div>
     </div>
   );
 };

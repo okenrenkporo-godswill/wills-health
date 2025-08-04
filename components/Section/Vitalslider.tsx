@@ -17,7 +17,7 @@ const cardDetails = {
       title: "Heart Rate",
       description: "Resting: 72 bpm",
       bg: "bg-gradient-to-r from-[#3b0764] to-[#6d28d9]",
-      image: "/images/vitals.png",
+      image: "/slider3.png",
     },
     {
       title: "Blood Pressure",
