@@ -297,7 +297,7 @@ const Dashboard = () => {
                   </Button>
                 </CardContent>
               </Card>
-              {isMobile && <AllPatient />}
+              <AllPatient />
             </motion.div>
           </TabsContent>
 

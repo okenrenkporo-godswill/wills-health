@@ -53,15 +53,15 @@ const DashboardMobile = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col font-sans text-white overflow-visible"
+      className="min-h-screen flex flex-col font-sans overflow-visible"
       style={{
         background:
           "linear-gradient(to bottom, #001233 0%, #003366 35%, #0055aa 60%, #87cefa 85%, #ffffff 100%)",
       }}
     >
       {/* HEADER */}
-      <header className="pt-14 pb-8 flex flex-col items-center">
-        <HeartPulse className="w-9 h-9 mb-3 text-white" />
+      <header className="pt-14 pb-8 flex flex-col items-center text-white">
+        <HeartPulse className="w-9 h-9 mb-3" />
         <h1 className="text-[22px] font-bold leading-tight text-center">
           Wills Health Center
         </h1>
@@ -116,19 +116,30 @@ const DashboardMobile = () => {
             transition={{ duration: 0.5 }}
           >
             <Card className="bg-white shadow border">
+              {/* Header */}
+              <div className="px-6 pt-4">
+                <h2 className="text-lg font-semibold text-blue-800">
+                  ➕ Add New Patient
+                </h2>
+              </div>
+
+              {/* Form */}
               <CardContent className="p-6 space-y-4">
                 <Input
                   placeholder="Patient Name"
+                  className="bg-white text-gray-900 placeholder-gray-500"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
                 <Input
                   placeholder="Age"
+                  className="bg-white text-gray-900 placeholder-gray-500"
                   value={age}
                   onChange={(e) => setAge(e.target.value)}
                 />
                 <Textarea
                   placeholder="Symptoms"
+                  className="bg-white text-gray-900 placeholder-gray-500"
                   value={symptoms}
                   onChange={(e) => setSymptoms(e.target.value)}
                 />
@@ -140,8 +151,12 @@ const DashboardMobile = () => {
                   Add Patient
                 </Button>
               </CardContent>
+
+              {/* Patient List */}
+              <div className="px-6 pb-6">
+                <AllPatient />
+              </div>
             </Card>
-            <AllPatient />
           </motion.div>
         </TabsContent>
 

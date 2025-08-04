@@ -66,7 +66,7 @@ const Login = () => {
   };
 
   return (
-    <div className="relative w-full max-w-md bg-white shadow-xl rounded-xl border border-blue-100 p-6">
+    <div className="relative w-full max-w-md bg-white shadow-xl rounded-xl border border-blue-100 p-6 min-h-[460px]">
       {/* Overlay Loader */}
       {loading && (
         <div className="absolute inset-0 bg-white/70 flex flex-col items-center justify-center z-50 rounded-xl">

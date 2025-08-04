@@ -25,7 +25,10 @@ const formSchema = z.object({
   username: z
     .string()
     .min(2, { message: "Username must be at least 2 characters." }),
-  password: z.string().min(4, "Minimum 4 characters"),
+  password: z
+    .string()
+    .min(4, { message: "Password must be at least 4 characters." })
+    .max(12, { message: "Password must be at most 12 characters." }),
 });
 
 const Register = () => {
@@ -50,23 +53,24 @@ const Register = () => {
       const data = await res.json();
 
       if (res.ok) {
-        // Auto login after register
+        // ✅ Save auth so user is logged in instantly
         useAuthStore.getState().setAuth(data.username, data.token);
         toast.success("Account created successfully 🎉");
         router.push("/user/dashboard");
       } else {
         toast.error(data.error || "Registration failed");
       }
-    } catch (error) {
-      console.error("Register error:", error);
+    } catch (err) {
+      console.error("Register error:", err);
       toast.error("Network error");
     } finally {
+      // ✅ Always stop loading
       setLoading(false);
     }
   };
 
   return (
-    <div className="relative w-full max-w-md bg-white shadow-xl rounded-xl border border-blue-100 p-6">
+    <div className="relative w-full max-w-md bg-white shadow-xl rounded-xl border border-blue-100 p-6 min-h-[460px]">
       {/* Overlay Loader */}
       {loading && (
         <div className="absolute inset-0 bg-white/70 flex flex-col items-center justify-center z-50 rounded-xl">
@@ -81,7 +85,7 @@ const Register = () => {
         Create Your Wills Health Account
       </h2>
       <p className="text-sm text-gray-500 mb-6">
-        Join us and take control of your health journey today.
+        Start your journey to smarter health tracking today.
       </p>
 
       <Form {...form}>
@@ -138,7 +142,7 @@ const Register = () => {
             Register
           </Button>
 
-          {/* Google Register */}
+          {/* Google register */}
           <div className="text-center text-sm text-gray-500 mt-4">
             or sign up with
           </div>
@@ -151,7 +155,7 @@ const Register = () => {
             Continue With Google
           </Button>
 
-          {/* Login link */}
+          {/* Already have account */}
           <p className="text-center text-sm text-gray-600">
             Already have an account?{" "}
             <Link href="/login" className="text-blue-600 hover:underline">
