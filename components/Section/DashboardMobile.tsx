@@ -116,14 +116,9 @@ const DashboardMobile = () => {
             transition={{ duration: 0.5 }}
           >
             <Card className="bg-white shadow border">
-              {/* Header */}
-              <div className="px-6 pt-4">
-                <h2 className="text-lg font-semibold text-blue-800">
-                  ➕ Add New Patient
-                </h2>
-              </div>
-
-              {/* Form */}
+              <h2 className="text-lg font-semibold text-blue-800  px-1">
+                ➕ Add New Patient
+              </h2>
               <CardContent className="p-6 space-y-4">
                 <Input
                   placeholder="Patient Name"
@@ -151,12 +146,8 @@ const DashboardMobile = () => {
                   Add Patient
                 </Button>
               </CardContent>
-
-              {/* Patient List */}
-              <div className="px-6 pb-6">
-                <AllPatient />
-              </div>
             </Card>
+            <AllPatient />
           </motion.div>
         </TabsContent>
 
