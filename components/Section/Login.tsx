@@ -56,9 +56,8 @@ const Login = () => {
         toast.error(data.error || "Login failed");
       }
     } catch (err) {
+      console.error("Login error:", err);
       toast.error("Network error");
-    } finally {
-      setLoading(false);
     }
   };
 
